@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Formulário - ODS 10</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/styleFormulario.css"/>
+</head>
+<body>
+    <header>
+        <h1>Formulário - ODS 10</h1>
+    </header>
+    <nav>
+        <a href="inicio.html">Início</a>
+    </nav>
+    <section>
+        <div>
+            <form action="processa_formulario.php" method="post">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="idade">Idade:</label>
+                <input type="number" id="idade" name="idade" required>
+
+                <label for="pais">País de Origem:</label>
+                <input type="text" id="pais" name="pais" required>
+
+                <label for="comentario">Como você pode contribuir para a redução das desigualdades?</label>
+                <textarea id="comentario" name="comentario" rows="4" required></textarea>
+
+                <input type="submit" value="Enviar">
+            </form>
+        </div>
+    </section>
+    <footer>
+        2023 Rafael Jardim Soares.
+    </footer>
+</body>
+</html>
