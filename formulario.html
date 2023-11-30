@@ -4,18 +4,18 @@
     <title>Formulário - ODS 10</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="css/styleFormulario.css"/>
+    <link rel="stylesheet" href="styleFormulario.css"/>
 </head>
 <body>
     <header>
         <h1>Formulário - ODS 10</h1>
     </header>
     <nav>
-        <a href="inicio.html">Início</a>
+        <a href="index.html">Início</a>
     </nav>
     <section>
         <div>
-            <form action="processa_formulario.php" method="post">
+            <form id="myForm" action="processa_formulario.php" method="post">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required>
 
@@ -32,11 +32,107 @@
                 <textarea id="comentario" name="comentario" rows="4" required></textarea>
 
                 <input type="submit" value="Enviar">
+                <button type="button" onclick="clearForm()">Limpar</button>
             </form>
         </div>
+
+        <!-- Campo de Pesquisa -->
+        <div>
+            <label for="search">Pesquisar por Nome:</label>
+            <input type="text" id="search" oninput="searchItems()">
+        </div>
+
+        <!-- Lista de Envios -->
+        <ul id="dataList"></ul>
     </section>
     <footer>
         2023 Rafael Jardim Soares.
     </footer>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var nome = document.getElementById('nome').value;
+            var email = document.getElementById('email').value;
+            var idade = document.getElementById('idade').value;
+            var pais = document.getElementById('pais').value;
+            var comentario = document.getElementById('comentario').value;
+
+            var formData = {
+                nome: nome,
+                email: email,
+                idade: idade,
+                pais: pais,
+                comentario: comentario,
+                date: new Date().toLocaleString()
+            };
+
+            addItemToList(formData);
+            clearForm();
+        });
+
+        function addItemToList(formData) {
+            var dataList = document.getElementById('dataList');
+
+            var listItem = document.createElement('li');
+            listItem.innerHTML = `<strong>Data:</strong> ${formData.date}<br>
+                                   <strong>Nome:</strong> ${formData.nome}<br>
+                                   <strong>Email:</strong> ${formData.email}<br>`;
+
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Excluir';
+            deleteButton.onclick = function () {
+                deleteItem(formData);
+            };
+
+            listItem.appendChild(deleteButton);
+
+            dataList.appendChild(listItem);
+
+            var formDataList = getFormDataList();
+            formDataList.push(formData);
+
+            localStorage.setItem('formDataList', JSON.stringify(formDataList));
+        }
+
+        function getFormDataList() {
+            return JSON.parse(localStorage.getItem('formDataList')) || [];
+        }
+
+        function clearForm() {
+            document.getElementById('myForm').reset();
+        }
+
+        function deleteItem(formData) {
+            var dataList = document.getElementById('dataList');
+            dataList.removeChild(event.target.parentNode);
+
+            var updatedList = getFormDataList().filter(function (item) {
+                return item.date !== formData.date;
+            });
+
+            localStorage.setItem('formDataList', JSON.stringify(updatedList));
+        }
+
+        // Função para realizar a pesquisa
+        function searchItems() {
+            var searchValue = document.getElementById('search').value.toLowerCase();
+            var dataList = document.getElementById('dataList');
+            var items = dataList.getElementsByTagName('li');
+
+            for (var i = 0; i < items.length; i++) {
+                var itemName = items[i].textContent.toLowerCase();
+
+                // Oculta ou exibe o item com base na pesquisa
+                if (itemName.includes(searchValue)) {
+                    items[i].style.display = 'block';
+                } else {
+                    items[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>
+
